@@ -54,7 +54,7 @@ public class MainView extends JFrame  implements KeyListener {
         getContentPane().setLayout(groupLayout);
 
         scene.setDisplay(display);
-        scene.paint();
+        scene.paint(rectangle3D -> rectangle3D);
         addKeyListener(this);
 
     }
@@ -65,34 +65,34 @@ public class MainView extends JFrame  implements KeyListener {
         switch (code) {
 
             case KeyEvent.VK_UP:
-                scene.translateForward();
+                scene.paint(scene.translateForward());
                 break;
             case KeyEvent.VK_DOWN:
-                scene.translateBack();
+                scene.paint(scene.translateBack());
                 break;
             case KeyEvent.VK_LEFT:
-                scene.translateLeft();
+                scene.paint(scene.translateLeft());
                 break;
             case KeyEvent.VK_RIGHT:
-                scene.translateRight();
+                scene.paint(scene.translateRight());
                 break;
             case KeyEvent.VK_COMMA:
-                scene.translateUp();
+                scene.paint(scene.translateUp());
                 break;
             case KeyEvent.VK_PERIOD:
-                scene.translateBottom();
+                scene.paint(scene.translateBottom());
                 break;
             case KeyEvent.VK_A:
-                scene.turnLeft();
+                scene.paint(scene.turnLeft());
                 break;
             case KeyEvent.VK_D:
-                scene.turnRight();
+                scene.paint(scene.turnRight());
                 break;
             case KeyEvent.VK_W:
-                scene.turnUp();
+                scene.paint(scene.turnUp());
                 break;
             case KeyEvent.VK_S:
-                scene.turnDown();
+                scene.paint(scene.turnDown());
                 break;
             case KeyEvent.VK_PAGE_UP:
                 scene.zoomIN();

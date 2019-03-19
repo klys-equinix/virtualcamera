@@ -56,82 +56,82 @@ public class RectangleScene {
 
     public void zoomIN() {
         this.setZc(this.getZc() + FOCAL_STEP);
-        paint();
+        paint(rectangle3D -> rectangle3D);
     }
 
     public void zoomOUT() {
         this.setZc(this.getZc() - FOCAL_STEP);
-        paint();
+        paint(rectangle3D -> rectangle3D);
     }
 
-    public void translateLeft() {
-        rectangles.parallelStream().forEach(rect -> {
+    public Function<Rectangle3D, Rectangle3D> translateLeft() {
+        return rect -> {
             rect.getA().setX(rect.getA().getX() + TRANSLATION_STEP);
             rect.getB().setX(rect.getB().getX() + TRANSLATION_STEP);
             rect.getC().setX(rect.getC().getX() + TRANSLATION_STEP);
             rect.getD().setX(rect.getD().getX() + TRANSLATION_STEP);
-        });
-        paint();
+            return rect;
+        };
     }
 
-    public void translateRight() {
-        rectangles.parallelStream().forEach(rect -> {
+    public Function<Rectangle3D, Rectangle3D> translateRight() {
+        return rect -> {
             rect.getA().setX(rect.getA().getX() - TRANSLATION_STEP);
             rect.getB().setX(rect.getB().getX() - TRANSLATION_STEP);
             rect.getC().setX(rect.getC().getX() - TRANSLATION_STEP);
             rect.getD().setX(rect.getD().getX() - TRANSLATION_STEP);
-        });
-        paint();
+            return rect;
+        };
     }
 
-    public void translateBack() {
-        rectangles.parallelStream().forEach(rect -> {
+    public Function<Rectangle3D, Rectangle3D> translateBack() {
+        return rect -> {
             rect.getA().setY(rect.getA().getY() + TRANSLATION_STEP);
             rect.getB().setY(rect.getB().getY() + TRANSLATION_STEP);
             rect.getC().setY(rect.getC().getY() + TRANSLATION_STEP);
             rect.getD().setY(rect.getD().getY() + TRANSLATION_STEP);
-        });
-        paint();
+            return rect;
+        };
     }
 
-    public void translateForward() {
-        rectangles.parallelStream().forEach(rect -> {
+    public Function<Rectangle3D, Rectangle3D> translateForward() {
+        return rect -> {
             rect.getA().setY(rect.getA().getY() - TRANSLATION_STEP);
             rect.getB().setY(rect.getB().getY() - TRANSLATION_STEP);
             rect.getC().setY(rect.getC().getY() - TRANSLATION_STEP);
             rect.getD().setY(rect.getD().getY() - TRANSLATION_STEP);
-        });
-        paint();
+            return rect;
+        };
     }
 
-    public void translateBottom() {
-        rectangles.parallelStream().forEach(rect -> {
+    public Function<Rectangle3D, Rectangle3D> translateBottom() {
+        return rect -> {
             rect.getA().setZ(rect.getA().getZ() + TRANSLATION_STEP);
             rect.getB().setZ(rect.getB().getZ() + TRANSLATION_STEP);
             rect.getC().setZ(rect.getC().getZ() + TRANSLATION_STEP);
             rect.getD().setZ(rect.getD().getZ() + TRANSLATION_STEP);
-        });
-        paint();
+            return rect;
+        };
     }
 
-    public void translateUp() {
-        rectangles.parallelStream().forEach(rect -> {
+    public Function<Rectangle3D, Rectangle3D> translateUp() {
+        return rect -> {
             rect.getA().setZ(rect.getA().getZ() - TRANSLATION_STEP);
             rect.getB().setZ(rect.getB().getZ() - TRANSLATION_STEP);
             rect.getC().setZ(rect.getC().getZ() - TRANSLATION_STEP);
             rect.getD().setZ(rect.getD().getZ() - TRANSLATION_STEP);
-        });
-        paint();
+            return rect;
+        };
     }
 
-    public void turnUp() {
-        rectangles.parallelStream().forEach(rectangle3D -> {
+    public Function<Rectangle3D, Rectangle3D> turnUp() {
+        return rectangle3D -> {
             rectangle3D.setA(rotatePointUp(rectangle3D.getA()));
             rectangle3D.setB(rotatePointUp(rectangle3D.getB()));
             rectangle3D.setC(rotatePointUp(rectangle3D.getC()));
             rectangle3D.setD(rotatePointUp(rectangle3D.getD()));
-        });
-        paint();
+            return rectangle3D;
+        };
     }
 
     private Point3d rotatePointUp(Point3d point3d) {
@@ -144,14 +144,14 @@ public class RectangleScene {
         return point3d;
     }
 
-    public void turnDown() {
-        rectangles.parallelStream().forEach(rectangle3D -> {
+    public Function<Rectangle3D, Rectangle3D> turnDown() {
+        return rectangle3D -> {
             rectangle3D.setA(rotatePointDown(rectangle3D.getA()));
             rectangle3D.setB(rotatePointDown(rectangle3D.getB()));
             rectangle3D.setC(rotatePointDown(rectangle3D.getC()));
             rectangle3D.setD(rotatePointDown(rectangle3D.getD()));
-        });
-        paint();
+            return rectangle3D;
+        };
     }
 
     private Point3d rotatePointDown(Point3d point3d) {
@@ -165,14 +165,14 @@ public class RectangleScene {
     }
 
 
-    public void turnLeft() {
-        rectangles.parallelStream().forEach(rectangle3D -> {
+    public Function<Rectangle3D, Rectangle3D> turnLeft() {
+        return rectangle3D -> {
             rectangle3D.setA(rotatePointLeft(rectangle3D.getA()));
             rectangle3D.setB(rotatePointLeft(rectangle3D.getB()));
             rectangle3D.setC(rotatePointLeft(rectangle3D.getC()));
             rectangle3D.setD(rotatePointLeft(rectangle3D.getD()));
-        });
-        paint();
+            return rectangle3D;
+        };
     }
 
     private Point3d rotatePointLeft(Point3d point3d) {
@@ -185,15 +185,14 @@ public class RectangleScene {
         return point3d;
     }
 
-    public void turnRight() {
-        rectangles.parallelStream().forEach(rectangle3D -> {
+    public Function<Rectangle3D, Rectangle3D> turnRight() {
+        return rectangle3D -> {
             rectangle3D.setA(rotatePointRight(rectangle3D.getA()));
             rectangle3D.setB(rotatePointRight(rectangle3D.getB()));
             rectangle3D.setC(rotatePointRight(rectangle3D.getC()));
             rectangle3D.setD(rotatePointRight(rectangle3D.getD()));
-        });
-
-        paint();
+            return rectangle3D;
+        };
     }
 
     private Point3d rotatePointRight(Point3d point3d) {
@@ -206,34 +205,13 @@ public class RectangleScene {
         return point3d;
     }
 
-    public void paint() {
-        ArrayList<Rectangle3D> toMap = new ArrayList<>(rectangles);
-        var startPoint = new Point3d(Xc, Zc, Yc);
-        display.setRectangles(toMap.parallelStream()
-                .sorted(Comparator.comparing(rect -> ((Rectangle3D)rect).getMidDistance(startPoint)).reversed())
-                .map(project())
+    public void paint(Function<Rectangle3D, Rectangle3D> process) {
+        display.setRectangles(rectangles.parallelStream()
+                .sorted(Comparator.comparing(rect -> ((Rectangle3D)rect).getMidDistance(new Point3d(Xc, Zc, Yc))).reversed())
+                .map(process.andThen(project()))
                 .filter(Rectangle2D::isNotNull)
                 .collect(Collectors.toList()));
         display.repaint();
-    }
-
-    public void loadData(double[][] data) {
-        var lines = new ArrayList<Line3D>();
-        for (double[] datum : data) {
-            var newLine = Line3D.fromCoords(datum[0], datum[1], datum[2], datum[3], datum[4], datum[5]);
-            lines.add(newLine);
-            if (lines.size() == 4) {
-                rectangles.add(Rectangle3D.builder()
-                        .a(lines.get(0).getStart())
-                        .b(lines.get(1).getStart())
-                        .c(lines.get(2).getStart())
-                        .d(lines.get(3).getStart())
-                        .color(colors[ThreadLocalRandom.current().nextInt(0, colors.length)])
-                        .build());
-                lines.clear();
-            }
-        }
-        rectangles = rectangles.stream().flatMap(splitRectangle().apply(64)).collect(Collectors.toList());
     }
 
     private Function<Rectangle3D, Rectangle2D> project() {
@@ -287,8 +265,8 @@ public class RectangleScene {
             var result2 = new Point2d(result1.getX(), result1.getY());
             return new Line2D(result1, result2);
         } else {
-            double Y = start.getY() - end.getY();
-            double y = Zc - start.getY();
+            var Y = start.getY() - end.getY();
+            var y = Zc - start.getY();
             double x, z, k;
             k = y / Y;
             x = start.getX() + ((end.getX() - start.getX()) * k);
@@ -302,6 +280,25 @@ public class RectangleScene {
         var xPrime = focal * point3d.getX() + ZERO_POINT.getX();
         var yPrime = ZERO_POINT.getY() - focal * point3d.getZ();
         return new Point2d(xPrime, yPrime);
+    }
+
+    public void loadData(double[][] data) {
+        var lines = new ArrayList<Line3D>();
+        for (double[] datum : data) {
+            var newLine = Line3D.fromCoords(datum[0], datum[1], datum[2], datum[3], datum[4], datum[5]);
+            lines.add(newLine);
+            if (lines.size() == 4) {
+                rectangles.add(Rectangle3D.builder()
+                        .a(lines.get(0).getStart())
+                        .b(lines.get(1).getStart())
+                        .c(lines.get(2).getStart())
+                        .d(lines.get(3).getStart())
+                        .color(colors[ThreadLocalRandom.current().nextInt(0, colors.length)])
+                        .build());
+                lines.clear();
+            }
+        }
+        rectangles = rectangles.parallelStream().flatMap(splitRectangle().apply(16)).collect(Collectors.toList());
     }
 
     private Function<Integer, Function<Rectangle3D, Stream<Rectangle3D>>> splitRectangle() {
