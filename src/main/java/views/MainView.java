@@ -11,8 +11,20 @@ import java.awt.event.KeyListener;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.util.function.Function;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
+
+import static logic.Processors.translateBack;
+import static logic.Processors.translateBottom;
+import static logic.Processors.translateForward;
+import static logic.Processors.translateLeft;
+import static logic.Processors.translateRight;
+import static logic.Processors.translateUp;
+import static logic.Processors.turnDown;
+import static logic.Processors.turnLeft;
+import static logic.Processors.turnRight;
+import static logic.Processors.turnUp;
 
 public class MainView extends JFrame  implements KeyListener {
     private static final long serialVersionUID = -9152548955124095714L;
@@ -54,7 +66,7 @@ public class MainView extends JFrame  implements KeyListener {
         getContentPane().setLayout(groupLayout);
 
         scene.setDisplay(display);
-        scene.paint(rectangle3D -> rectangle3D);
+        scene.paint(Function.identity());
         addKeyListener(this);
 
     }
@@ -65,34 +77,34 @@ public class MainView extends JFrame  implements KeyListener {
         switch (code) {
 
             case KeyEvent.VK_UP:
-                scene.paint(scene.translateForward());
+                scene.paint(translateForward());
                 break;
             case KeyEvent.VK_DOWN:
-                scene.paint(scene.translateBack());
+                scene.paint(translateBack());
                 break;
             case KeyEvent.VK_LEFT:
-                scene.paint(scene.translateLeft());
+                scene.paint(translateLeft());
                 break;
             case KeyEvent.VK_RIGHT:
-                scene.paint(scene.translateRight());
+                scene.paint(translateRight());
                 break;
             case KeyEvent.VK_COMMA:
-                scene.paint(scene.translateUp());
+                scene.paint(translateUp());
                 break;
             case KeyEvent.VK_PERIOD:
-                scene.paint(scene.translateBottom());
+                scene.paint(translateBottom());
                 break;
             case KeyEvent.VK_A:
-                scene.paint(scene.turnLeft());
+                scene.paint(turnLeft());
                 break;
             case KeyEvent.VK_D:
-                scene.paint(scene.turnRight());
+                scene.paint(turnRight());
                 break;
             case KeyEvent.VK_W:
-                scene.paint(scene.turnUp());
+                scene.paint(turnUp());
                 break;
             case KeyEvent.VK_S:
-                scene.paint(scene.turnDown());
+                scene.paint(turnDown());
                 break;
             case KeyEvent.VK_PAGE_UP:
                 scene.zoomIN();
