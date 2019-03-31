@@ -26,12 +26,16 @@ public class Rectangle3D {
     private Color color;
 
     public double getMidDistance(Point3d startPoint) {
+        return startPoint.distance(getMidPoint());
+    }
+
+    public Point3d getMidPoint() {
         var mid = new Point3d();
         mid.add(a);
         mid.add(b);
         mid.add(c);
         mid.add(d);
         mid.scale(0.25);
-        return startPoint.distance(mid);
+        return mid;
     }
 }

@@ -24,12 +24,16 @@ import java.util.stream.Stream;
 
 import static data.Data.X_DIMENSION;
 import static data.Data.Y_DIMENSION;
+import static logic.Phong.crop;
+import static logic.Phong.ia;
+import static logic.Phong.ka;
+import static logic.Phong.phong;
 
 @Getter
 @Setter
 public class RectangleScene {
-    public final static double Xc = 0;
-    public final static double Yc = 0;
+    public final static double Xc = 500;
+    public final static double Yc = 500;
     private double Zc = 300;
 
     public static double TRANSLATION_STEP = 50.0;
@@ -37,6 +41,8 @@ public class RectangleScene {
     public static double ROTATION_STEP = 0.1;
 
     public final static Vector3d ZERO_POINT = new Vector3d(X_DIMENSION / 2, Y_DIMENSION / 2, 0);
+    private final static Point3d light = new Point3d(-1, 1, -1);
+
 
     private static Color[] colors = {
             Color.CYAN,
@@ -67,7 +73,7 @@ public class RectangleScene {
     public void paint(Function<Rectangle3D, Rectangle3D> process) {
         display.setRectangles(rectangles.parallelStream()
                 .sorted(Comparator.comparing(rect -> ((Rectangle3D)rect).getMidDistance(new Point3d(Xc, Zc, Yc))).reversed())
-                .map(process.andThen(project()))
+                .map(process.andThen(shade()).andThen(project()))
                 .filter(Rectangle2D::isNotNull)
                 .collect(Collectors.toList()));
         display.repaint();
@@ -108,6 +114,26 @@ public class RectangleScene {
 
             rectangle2D.setColor(rectangle3D.getColor());
             return rectangle2D;
+        };
+    }
+
+    private Function<Rectangle3D, Rectangle3D> shade() {
+        return rectangle3D -> {
+            var radius = (X_DIMENSION/2);
+            var v = new Vector3d(Xc, Zc, Yc);
+            v.sub(rectangle3D.getMidPoint());
+            var l = new Vector3d(light.x*radius+radius, light.y*radius+radius, light.z*radius);
+            l.sub(rectangle3D.getMidPoint());
+            var n = new Point3d(rectangle3D.getMidPoint().x-(radius), rectangle3D.getMidPoint().z-(radius), rectangle3D.getMidPoint().y);
+
+            var p = phong(v, l, new Vector3d(n));
+
+            p += ia*ka;
+
+            var c = (float) crop(p);
+            rectangle3D.setColor(new Color(c, c, c));
+
+            return rectangle3D;
         };
     }
 
@@ -158,7 +184,7 @@ public class RectangleScene {
                 lines.clear();
             }
         }
-        rectangles = rectangles.parallelStream().flatMap(splitRectangle().apply(256)).collect(Collectors.toList());
+        rectangles = rectangles.parallelStream().flatMap(splitRectangle().apply(64)).collect(Collectors.toList());
     }
 
     private Function<Integer, Function<Rectangle3D, Stream<Rectangle3D>>> splitRectangle() {
